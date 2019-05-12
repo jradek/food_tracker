@@ -1,3 +1,3 @@
 #! /usr/bin/env bash
 
-flask run
+python -m flask run
