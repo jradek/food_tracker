@@ -1,0 +1,33 @@
+table {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+
+tr.bordered {
+  border-top: 1px solid black;
+}
+
+td {
+  color: green;
+}
+
+.monospaced {
+  font-family: "Courier", sans-serif;
+}
+
+td.monospaced {
+  width: 90px;
+}
+
+.right {
+  text-align: right;
+}
+
+td.right {
+  color: darkblue;
+}

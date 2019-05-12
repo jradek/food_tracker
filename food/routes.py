@@ -1,4 +1,8 @@
+from flask import render_template, url_for
+import os
+
 from food import app
+from food import model as mdl
 
 
 @app.context_processor
@@ -31,5 +35,28 @@ def example():
 @app.route("/")
 @app.route("/index")
 def index():
-    return "Hello, World!"
-    # return '\n'.join(model.format_servings(model.MEALS))
+    meals = [
+        mdl.calc_serving_by_product_factor(2.0, mdl.DATABASE["skyr"]),
+        mdl.calc_serving_by_product_factor(1.25, mdl.DATABASE["feta"]),
+        mdl.calc_serving_by_product_factor(0.05, mdl.DATABASE["leinsamen"]),
+        mdl.calc_serving_by_product_factor(1.74, mdl.DATABASE["ei"]),
+        mdl.calc_serving_by_product_factor(0.07, mdl.DATABASE["kokosoel"]),
+    ]
+
+    main_data = [
+        {"serving": srv, "energy_ing": mdl.energy_from_ingredients(srv.macros)}
+        for srv in meals
+    ]
+
+    summary = mdl.summarize_servings(meals)
+
+    summary_data = {
+        "summary": summary,
+        "energy_ing": mdl.energy_from_ingredients(summary["macros"]),
+    }
+
+    print(summary_data)
+
+    return render_template(
+        "servings.html", main_data=main_data, summary_data=summary_data
+    )

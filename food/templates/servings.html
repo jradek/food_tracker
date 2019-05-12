@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>Servings</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <td></td>
+          <th style="text-align: center" colspan="2">Energy [kcal]</th>
+          <th style="text-align: center" colspan="3">Ingredients [g]</th>
+        </tr>
+        <tr>
+          <th>Product</th>
+          <th class="right">E<sub>Man</sub></th>
+          <th class="right">E<sub>Ing</sub></th>
+          <th class="right">Fats</th>
+          <th class="right">Carbs</th>
+          <th class="right">Proteins</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in main_data %}
+        <tr>
+          <td>{{ item.serving.product_id }}</td>
+          <td class="right monospaced">{{ "%6.2f" % item.serving.kcal }}</td>
+          <td class="right monospaced">{{ "%6.2f" % item.energy_ing }}</td>
+          <td class="right monospaced">
+            {{ "%5.2f" % item.serving.macros.fat }}
+          </td>
+          <td class="right monospaced">
+            {{ "%5.2f" % item.serving.macros.carb }}
+          </td>
+          <td class="right monospaced">
+            {{ "%5.2f" % item.serving.macros.prot }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr class="bordered">
+          <td>Sum [g]</td>
+          <td class="right monospaced">
+            {{ "%6.2f" % summary_data.summary.kcal }}
+          </td>
+          <td class="right monospaced">
+            {{ "%6.2f" % summary_data.energy_ing }}
+          </td>
+          <td class="right monospaced">
+            {{ "%6.2f" % summary_data.summary.kcal }}
+          </td>
+          <td class="right monospaced">
+            {{ "%6.2f" % summary_data.summary.kcal }}
+          </td>
+          <td class="right monospaced">
+            {{ "%6.2f" % summary_data.summary.kcal }}
+          </td>
+        </tr>
+        <tr>
+          <td>[%]</td>
+          <td></td>
+          <td class="right monospaced">100%</td>
+          <td class="right monospaced">
+            {{ "%6.2f%%" % summary_data.summary.macros_percent[0] }}
+          </td>
+          <td class="right monospaced">
+            {{ "%6.2f%%" % summary_data.summary.macros_percent[1] }}
+          </td>
+          <td class="right monospaced">
+            {{ "%6.2f%%" % summary_data.summary.macros_percent[2] }}
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    <p>
+      E<sub>Man</sub>: As stated by manufacturer, E<sub>Ing</sub>: Calculated
+      from ingredients
+    </p>
+  </body>
+</html>
