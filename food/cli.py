@@ -1,6 +1,7 @@
 import typing
 from food import model
 
+
 def shorten_str(s, width):
     l = len(s)
     if len(s) <= width:
@@ -24,6 +25,7 @@ def format_serving(s: model.Serving) -> str:
     s_fmt += f" {macros.prot:5.1f}"
 
     return s_fmt
+
 
 def format_servings(ls) -> typing.List[str]:
     lines = []
