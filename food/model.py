@@ -95,7 +95,7 @@ def calc_serving_for_kcal(kcal, prod: Product):
 
 
 def summarize_servings(ls) -> dict:
-    kcal, fats, carbs, prots = 0.0, 0.0, 0.0, 0.0
+    kcal, kcal2, fats, carbs, prots = 0.0, 0.0, 0.0, 0.0, 0.0
 
     for s in ls:
         kcal += s.kcal
@@ -103,16 +103,17 @@ def summarize_servings(ls) -> dict:
         fats += m.fat
         carbs += m.carb
         prots += m.prot
+        kcal2 += energy_from_ingredients(s.macros)
 
     ing = Ingredients(fats, carbs, prots)
-    eng = energy_from_ingredients(ing)
 
-    percent_fat = CONVERSION["fat_to_kcal"] * fats / eng * 100.0
-    percent_carb = CONVERSION["carb_to_kcal"] * carbs / eng * 100.0
-    percent_prot = CONVERSION["prot_to_kcal"] * prots / eng * 100.0
+    percent_fat = CONVERSION["fat_to_kcal"] * fats / kcal2 * 100.0
+    percent_carb = CONVERSION["carb_to_kcal"] * carbs / kcal2 * 100.0
+    percent_prot = CONVERSION["prot_to_kcal"] * prots / kcal2 * 100.0
 
     return {
         "kcal": kcal,
+        "kcal2": kcal2,
         "macros": ing,
         "macros_percent": [percent_fat, percent_carb, percent_prot],
     }

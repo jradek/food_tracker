@@ -1,6 +1,7 @@
 from food import cli
 from food import model as mdl
 
+
 MEALS_SATURDAY = [
     mdl.calc_serving_by_product_factor(1.0, mdl.DATABASE["harzer"]),
     mdl.calc_serving_by_product_factor(2.5, mdl.DATABASE["skyr"]),
@@ -24,7 +25,8 @@ def main():
     # print(DATABASE)
 
     # print(MEALS[0])
-    print("\n".join(cli.format_servings(MEALS)))
+
+    print(cli.format_servings(MEALS))
 
     if False:
         print("-------------")
