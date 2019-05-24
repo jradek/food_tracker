@@ -51,3 +51,53 @@ paths:
                 type: string
               kcal:
                 type: integer
+
+  /energy:
+    get:
+      operationId: food.rest_api.get_energy
+      tags:
+        - energy
+      parameters:
+        - name: fats
+          in: query
+          description: fats in grams
+          type: number
+          minimum: 0
+          default: 0
+        - name: carbs
+          in: query
+          description: carbohydrate in grams
+          type: number
+          minimum: 0
+          default: 0
+        - name: prots
+          in: query
+          description: proteins in grams
+          type: number
+          minimum: 0
+          default: 0
+      responses:
+        200:
+          description: calories
+          schema:
+            properties:
+              kcal:
+                type: object
+                properties:
+                  fats:
+                    type: number
+                  carbs:
+                    type: number
+                  prots:
+                    type: number
+                  total:
+                    type: number
+              kcal_percent:
+                type: object
+                properties:
+                  fats:
+                    type: number
+                  carbs:
+                    type: number
+                  prots:
+                    type: number

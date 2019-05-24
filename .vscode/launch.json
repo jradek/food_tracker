@@ -13,16 +13,17 @@
     },
 
     {
-      "name": "Flask",
+      "name": "Flask (debug)",
       "type": "python",
       "request": "launch",
       "module": "flask",
       "env": {
         "FLASK_APP": "food:create_app_flask('dev')",
         "FLASK_ENV": "development",
-        "FLASK_DEBUG": "0"
+        "FLASK_DEBUG": "1"
       },
-      "args": ["run", "--no-debugger", "--no-reload"],
+      // "args": ["run", "--no-debugger", "--no-reload"],
+      "args": ["run"],
       "jinja": true
     }
   ]
