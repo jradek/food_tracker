@@ -105,7 +105,7 @@ def summarize_servings(ls) -> dict:
         prots += m.prot
         kcal2 += energy_from_ingredients(s.macros)
 
-    ing = { "fats": fats, "carbs" : carbs, "prots": prots }
+    ing = {"fats": fats, "carbs": carbs, "prots": prots}
 
     percent_fat = CONVERSION["fat_to_kcal"] * fats / kcal2 * 100.0
     percent_carb = CONVERSION["carb_to_kcal"] * carbs / kcal2 * 100.0

@@ -1,0 +1,53 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes with our server code
+  version: "1.0.0"
+  title: Swagger REST Article
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/api/v1"
+
+# Paths supported by the server application
+paths:
+  /product:
+    get:
+      operationId: food.product.read_all
+      tags:
+        - Product
+      summary: "The product data structure supported by the server application"
+      description: "Read the list of products"
+      responses:
+        200:
+          description: "Successful read product list operation"
+          schema:
+            type: "array"
+            items:
+              properties:
+                id:
+                  type: "string"
+                kcal:
+                  type: integer
+
+  /product/{product_id}:
+    get:
+      operationId: food.product.read_one
+      tags:
+        - product
+      parameters:
+        - name: product_id
+          in: path
+          description: product id
+          type: string
+          required: True
+      responses:
+        200:
+          description: Jaja
+          schema:
+            properties:
+              id:
+                type: string
+              kcal:
+                type: integer

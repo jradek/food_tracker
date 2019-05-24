@@ -38,7 +38,11 @@ def format_servings(ls, include_aggregations=True) -> str:
 
     if include_aggregations:
         summary = model.summarize_servings(ls)
-        fats, carbs, prots = summary["sum_macros"]["fats"], summary["sum_macros"]["carbs"], summary["sum_macros"]["prots"]
+        fats, carbs, prots = (
+            summary["sum_macros"]["fats"],
+            summary["sum_macros"]["carbs"],
+            summary["sum_macros"]["prots"],
+        )
         table_rows.append(
             [
                 "_SUM",
@@ -74,5 +78,12 @@ def format_servings(ls, include_aggregations=True) -> str:
         )
 
     # print(table_rows)
-    headers = ("product", "E_man [kcal]", "E_ing [kcal]", "fat [g]", "carb [g]", "prot [g]")
+    headers = (
+        "product",
+        "E_man [kcal]",
+        "E_ing [kcal]",
+        "fat [g]",
+        "carb [g]",
+        "prot [g]",
+    )
     return tabulate(table_rows, headers=headers, floatfmt=".2f")

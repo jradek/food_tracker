@@ -1,16 +1,29 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "app.py",
-            "type": "python",
-            "request": "launch",
-            // "program": "${file}",
-            "program": "${workspaceFolder}/food/model.py",
-            "console": "integratedTerminal"
-        }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "food tracker server",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/food_tracker.py",
+      "console": "integratedTerminal"
+    },
+
+    {
+      "name": "Flask",
+      "type": "python",
+      "request": "launch",
+      "module": "flask",
+      "env": {
+        "FLASK_APP": "food:create_app_flask('dev')",
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "0"
+      },
+      "args": ["run", "--no-debugger", "--no-reload"],
+      "jinja": true
+    }
+  ]
 }
