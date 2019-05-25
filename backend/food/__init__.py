@@ -1,5 +1,6 @@
 import connexion
 import logging
+from flask_cors import CORS
 
 
 logging.basicConfig(level=logging.INFO)
@@ -12,8 +13,10 @@ def create_app(config: str):
     app = connexion.App(__name__)
     app.add_api("swagger.yaml")
 
-    from food import routes
+    # add CORS support
+    CORS(app.app)
 
+    from food import routes
     routes.register(app)
 
     return app

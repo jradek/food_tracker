@@ -9,6 +9,7 @@ connexion = {extras = ["swagger-ui"],version = "*"}
 #greenlet = {version = "*", platform_python_implementation="=='CPython'"}
 python-dotenv = "*"
 tabulate = "*"
+flask-cors = "*"
 
 [dev-packages]
 
