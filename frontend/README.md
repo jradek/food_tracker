@@ -1,3 +1,16 @@
+# Readme
+
+## Debug
+
+1. launch frontend
+
+    ```bash
+    $ npm start
+    ```
+
+2. In VsCode, run debugger with `Chrome` configuration
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
