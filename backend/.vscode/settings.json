@@ -10,5 +10,7 @@
         "kcal",
         "prot",
         "skyr"
-    ]
+    ],
+    "python.pythonPath": "C:\\Users\\micha\\.virtualenvs\\food_tracker-1TgujNEv\\Scripts\\python.exe",
+    "python.terminal.activateEnvironment": false
 }
