@@ -10,7 +10,7 @@ const dummyResult = {
     prots: 12,
     total: 333.2
   }
-}
+};
 
 class Energy extends Component {
   state = {
@@ -45,25 +45,26 @@ class Energy extends Component {
   renderResult() {
     if (this.state.result !== null) {
       const calories = this.state.result["kcal"];
-      const header = ['total', 'fats', 'carbs', 'proteins'];
-      const cols = ['total', 'fats', 'carbs', 'prots']
+      const header = ["total", "fats", "carbs", "proteins"];
+      const cols = ["total", "fats", "carbs", "prots"];
       return (
-        <table style={tblStyle}>
+        <table>
           <thead>
-          <tr>
-            {header.map(e => {
-              return (<th key={e}>{e}</th>)
-            })
-            }
-          </tr>
+            <tr>
+              {header.map(e => {
+                return <th key={e}>{e}</th>;
+              })}
+            </tr>
           </thead>
           <tbody>
             <tr>
-            {
-              cols.map(e => {
-                return (<td style={tdStyle} key={e}>{calories[e]}</td>)
-              })
-            }
+              {cols.map(e => {
+                return (
+                  <td key={e}>
+                    {calories[e]}
+                  </td>
+                );
+              })}
             </tr>
           </tbody>
         </table>
@@ -73,12 +74,11 @@ class Energy extends Component {
 
   render() {
     return (
-      <div style={{padding: '20px'}}>
+      <div style={{ padding: "20px" }}>
         <h2>Energy</h2>
-        <form onSubmit={this.onSubmit}  style={{padding: "20px", backgroundColor: '#f2f2f2', margin: '5px', borderRadius: '5px'}}>
+        <form onSubmit={this.onSubmit}>
           <label htmlFor="fats">Fats [g]</label>
           <input
-            style={inputStyle}
             type="number"
             name="fats"
             min="0"
@@ -89,7 +89,6 @@ class Energy extends Component {
           />
           <label htmlFor="carbs">Carbs [g]</label>
           <input
-            style={inputStyle}
             type="number"
             name="carbs"
             min="0"
@@ -100,7 +99,6 @@ class Energy extends Component {
           />
           <label htmlFor="proteins">Proteins [g]</label>
           <input
-            style={inputStyle}
             type="number"
             name="proteins"
             min="0"
@@ -109,50 +107,13 @@ class Energy extends Component {
             value={this.state.proteins}
             onChange={this.onChange}
           />
-          <input style={submitStyle}
-            type="submit"
-            value="Submit"
-            className="btn"
-          />
+          <input type="submit" value="Submit" className="btn" />
         </form>
         <br />
         {this.renderResult()}
       </div>
     );
   }
-}
-
-const inputStyle = {
-  width: '100%',
-  padding: '5px 5px',
-  marging: '8px 0',
-  display: 'inline-block',
-  border: '1px solid #ccc',
-  borderRadius: '4px',
-  boxSizing: 'border-box',
-  textAlign: 'right'
-}
-
-const submitStyle = {
-  width: '100%',
-  backgroundColor: '#4CAF50',
-  color: 'white',
-  padding: '14px 20px',
-  margin: '8px 0',
-  border: 'none',
-  borderRadius: '4px',
-  cursor: 'pointer'
-}
-
-const tblStyle = {
-  width: '100%',
-  border: '1px solid black',
-}
-
-const tdStyle = {
-  padding: '5px',
-  textAlign: 'right',
-  width: '50px'
 }
 
 export default Energy;
