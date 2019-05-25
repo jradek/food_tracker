@@ -44,12 +44,13 @@ del _ing
 
 DATABASE = {p.id: p for p in PRODUCTS}
 
+
 CONVERSION = {
     "kcal_to_kJ": 4.1841,
     "kJ_to_kcal": 0.239_006,
     "fat_to_kcal": 9.0,
     "carb_to_kcal": 4.1,
-    "prot_to_kcal": 4.1,
+    "protein_to_kcal": 4.1,
 }
 
 
@@ -58,7 +59,7 @@ def energy_from_ingredients(igs: Ingredients) -> float:
     """
     fats = CONVERSION["fat_to_kcal"] * igs.fat
     carbs = CONVERSION["carb_to_kcal"] * igs.carb
-    prots = CONVERSION["prot_to_kcal"] * igs.prot
+    prots = CONVERSION["protein_to_kcal"] * igs.prot
     return fats + carbs + prots
 
 
@@ -109,7 +110,7 @@ def summarize_servings(ls) -> dict:
 
     percent_fat = CONVERSION["fat_to_kcal"] * fats / kcal2 * 100.0
     percent_carb = CONVERSION["carb_to_kcal"] * carbs / kcal2 * 100.0
-    percent_prot = CONVERSION["prot_to_kcal"] * prots / kcal2 * 100.0
+    percent_prot = CONVERSION["protein_to_kcal"] * prots / kcal2 * 100.0
 
     return {
         "sum_energy_man": kcal,

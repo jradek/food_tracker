@@ -5,19 +5,19 @@ import React, { Component } from "react";
 import axios from "axios";
 
 const dummyResult = {
-  grams: {
+  serving: {
     fats: 10,
     carbs: 0.1,
-    prots: 8
+    proteins: 8
   },
-  kcal: {
+  calories: {
     fats: 10 * 9,
     carbs: 0.1 * 4,
-    prots: 8 * 4
+    proteins: 8 * 4
   }
 };
 
-function engeryRow(f, c, p) {
+function absoluteRow(label, f, c, p) {
   const total = f + c + p;
   const values = [
     ["total_cal", total],
@@ -28,7 +28,7 @@ function engeryRow(f, c, p) {
 
   return (
     <tr>
-      <th scope="row">Energy [kcal]</th>
+      <th scope="row">{label}</th>
       {values.map(e => {
         return (
           <td key={e[0]} className="number">
@@ -73,6 +73,7 @@ class Energy extends Component {
     fats: 0,
     carbs: 0,
     proteins: 0,
+    multiplier: 1.0,
     result: dummyResult
   };
 
@@ -85,16 +86,17 @@ class Energy extends Component {
     const params = {
       fats: this.state.fats,
       carbs: this.state.carbs,
-      prots: this.state.proteins
+      proteins: this.state.proteins,
+      multiplier: this.state.multiplier
     };
 
     console.log(params);
 
     axios
-      .get("http://localhost:5000/api/v1/energy", { params: params })
+      .get("http://localhost:5000/api/v1/energy/calculate", { params: params })
       .then(res => {
         console.log(res.data);
-        this.setState({ result: { kcal: res.data.kcal, grams: params } });
+        this.setState({ result: res.data.data });
       });
   };
 
@@ -103,8 +105,8 @@ class Energy extends Component {
       return;
     }
 
-    const cal = this.state.result.kcal;
-    const grams = this.state.result.grams;
+    const cal = this.state.result.calories;
+    const grams = this.state.result.serving;
 
     const header = ["Fats", "Carbs", "Proteins"];
 
@@ -120,9 +122,10 @@ class Energy extends Component {
           </tr>
         </thead>
         <tbody>
-          {engeryRow(cal.fats, cal.carbs, cal.prots)}
-          {percentRow("Energy [%]", cal.fats, cal.carbs, cal.prots)}
-          {percentRow("Size [%]", grams.fats, grams.carbs, grams.prots)}
+          {absoluteRow("Serving [g]", grams.fats, grams.carbs, grams.proteins)}
+          {percentRow("Serving [%]", grams.fats, grams.carbs, grams.proteins)}
+          {absoluteRow("Energy [kcal]", cal.fats, cal.carbs, cal.proteins)}
+          {percentRow("Energy [%]", cal.fats, cal.carbs, cal.proteins)}
         </tbody>
       </table>
     );
@@ -133,7 +136,7 @@ class Energy extends Component {
       <div style={{ padding: "20px" }}>
         <h2>Energy</h2>
         <form onSubmit={this.onSubmit}>
-          <label htmlFor="fats">Fats [g]</label>
+          <label htmlFor="fats">Fats [g] per 100g</label>
           <input
             type="number"
             name="fats"
@@ -143,24 +146,34 @@ class Energy extends Component {
             value={this.state.fats}
             onChange={this.onChange}
           />
-          <label htmlFor="carbs">Carbs [g]</label>
+          <label htmlFor="carbs">Carbs [g] per 100g</label>
           <input
             type="number"
             name="carbs"
             min="0"
-            step="0.1"
+            step="0.01"
             placeholder="carbohydrates"
             value={this.state.carbs}
             onChange={this.onChange}
           />
-          <label htmlFor="proteins">Proteins [g]</label>
+          <label htmlFor="proteins">Proteins [g] per 100g</label>
           <input
             type="number"
             name="proteins"
             min="0"
-            step="0.1"
+            step="0.01"
             placeholder="proteins"
             value={this.state.proteins}
+            onChange={this.onChange}
+          />
+          <label htmlFor="multiplier">Multiplier to adjust serving size</label>
+          <input
+            type="number"
+            name="multiplier"
+            min="0"
+            step="0.01"
+            placeholder="proteins"
+            value={this.state.multiplier}
             onChange={this.onChange}
           />
           <input type="submit" value="Submit" className="btn" />

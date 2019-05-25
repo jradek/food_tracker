@@ -17,6 +17,7 @@ def create_app(config: str):
     CORS(app.app)
 
     from food import routes
+
     routes.register(app)
 
     return app
