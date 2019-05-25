@@ -57,9 +57,60 @@ input[type="number"] {
 
 table {
   width: 100%;
+  /* width: 800px; */
   border: 1px solid black;
+  table-layout: fixed;
 }
 
 td {
+  padding: 2px;
+}
+
+th {
+  text-align: left;
+}
+
+.td-bar {
+  /* td cell dislaying a bar graph */
+  position: relative;
+  border: 1px solid #333;
+}
+
+.number {
   text-align: right;
+}
+
+.percentage-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+/* ==================================================================
+ COLORS
+*/
+.fat-color {
+  color: #f1c232;
+}
+
+.fat-bg-color {
+  background-color: #f1c23280;
+}
+
+.carb-color {
+  color: #cc0000;
+}
+
+.carb-bg-color {
+  background: #cc000080;
+}
+
+.protein-color {
+  color: #6aa84f;
+}
+
+.protein-bg-color {
+  background-color: #6aa84f80;
 }

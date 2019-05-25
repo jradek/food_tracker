@@ -4,13 +4,62 @@ import React, { Component } from "react";
 import axios from "axios";
 
 const dummyResult = {
+  grams: {
+    fats: 10,
+    carbs: 0.1,
+    prots: 8
+  },
   kcal: {
-    fats: 100.45,
-    carbs: 34,
-    prots: 12,
-    total: 333.2
+    fats: 10 * 9,
+    carbs: 0.1 * 4,
+    prots: 8 * 4
   }
 };
+
+function engeryRow(f, c, p) {
+  const total = f + c + p;
+  const values = [['total_cal', total], ['f_cal', f], ['c_cal', c], ['p_cal',p]];
+
+  return (
+    <tr>
+      <th scope="row">Energy [kcal]</th>
+      {values.map((e) => {
+        return <td key={e[0]} className="number">{e[1].toFixed(2)}</td>;
+      })}
+    </tr>
+  );
+}
+
+function tdBarChart(percent, colorName) {
+  // see: http://jsfiddle.net/ojLf5ap6/1/
+  const classNames = "percentage-bar " + colorName;
+  return (
+    <td className="number td-bar">
+      <div
+        className={classNames}
+        style={{ width: percent.toString() + "%" }}
+      />
+      {percent.toFixed(2)}
+    </td>
+  );
+}
+
+function percentRow(label, f, c, p) {
+  const total = f + c + p;
+  const f_percent = (f * 100.0) / total;
+  const c_percent = (c * 100.0) / total;
+  const p_percent = 100.0 - (f_percent + c_percent);
+
+  return (
+    <tr>
+      <th scope="row">{label}</th>
+      <td />
+      {tdBarChart(f_percent, "fat-bg-color")}
+      {tdBarChart(c_percent, "carb-bg-color")}
+      {tdBarChart(p_percent, "protein-bg-color")}
+    </tr>
+  );
+}
 
 class Energy extends Component {
   state = {
@@ -38,38 +87,38 @@ class Energy extends Component {
       .get("http://localhost:5000/api/v1/energy", { params: params })
       .then(res => {
         console.log(res.data);
-        this.setState({ result: res.data });
+        this.setState({ result: { kcal: res.data.kcal, grams: params } });
       });
   };
 
+
+
   renderResult() {
-    if (this.state.result !== null) {
-      const calories = this.state.result["kcal"];
-      const header = ["total", "fats", "carbs", "proteins"];
-      const cols = ["total", "fats", "carbs", "prots"];
-      return (
-        <table>
-          <thead>
-            <tr>
-              {header.map(e => {
-                return <th key={e}>{e}</th>;
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {cols.map(e => {
-                return (
-                  <td key={e}>
-                    {calories[e]}
-                  </td>
-                );
-              })}
-            </tr>
-          </tbody>
-        </table>
-      );
+    if (this.state.result === null) {
+      return;
     }
+
+    const cal = this.state.result.kcal;
+    const grams = this.state.result.grams;
+
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th />
+            <th />
+            <th>Fats</th>
+            <th>Carbs</th>
+            <th>Proteins</th>
+          </tr>
+        </thead>
+        <tbody>
+          {engeryRow(cal.fats, cal.carbs, cal.prots)}
+          {percentRow('Energy [%]', cal.fats, cal.carbs, cal.prots)}
+          {percentRow('Size [%]', grams.fats, grams.carbs, grams.prots)}
+        </tbody>
+      </table>
+    );
   }
 
   render() {
