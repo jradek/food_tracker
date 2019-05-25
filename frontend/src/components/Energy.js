@@ -1,3 +1,4 @@
+import * as R from "ramda";
 import React, { Component } from "react";
 // import PropTypes from "prop-types";
 
@@ -105,15 +106,17 @@ class Energy extends Component {
     const cal = this.state.result.kcal;
     const grams = this.state.result.grams;
 
+    const header = ["Fats", "Carbs", "Proteins"];
+
     return (
       <table>
         <thead>
           <tr>
             <th />
             <th />
-            <th>Fats</th>
-            <th>Carbs</th>
-            <th>Proteins</th>
+            {R.map(e => {
+              return <th key={e}>{e}</th>;
+            }, header)}
           </tr>
         </thead>
         <tbody>
