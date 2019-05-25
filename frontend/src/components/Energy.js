@@ -18,13 +18,22 @@ const dummyResult = {
 
 function engeryRow(f, c, p) {
   const total = f + c + p;
-  const values = [['total_cal', total], ['f_cal', f], ['c_cal', c], ['p_cal',p]];
+  const values = [
+    ["total_cal", total],
+    ["f_cal", f],
+    ["c_cal", c],
+    ["p_cal", p]
+  ];
 
   return (
     <tr>
       <th scope="row">Energy [kcal]</th>
-      {values.map((e) => {
-        return <td key={e[0]} className="number">{e[1].toFixed(2)}</td>;
+      {values.map(e => {
+        return (
+          <td key={e[0]} className="number">
+            {e[1].toFixed(2)}
+          </td>
+        );
       })}
     </tr>
   );
@@ -35,10 +44,7 @@ function tdBarChart(percent, colorName) {
   const classNames = "percentage-bar " + colorName;
   return (
     <td className="number td-bar">
-      <div
-        className={classNames}
-        style={{ width: percent.toString() + "%" }}
-      />
+      <div className={classNames} style={{ width: percent.toString() + "%" }} />
       {percent.toFixed(2)}
     </td>
   );
@@ -91,8 +97,6 @@ class Energy extends Component {
       });
   };
 
-
-
   renderResult() {
     if (this.state.result === null) {
       return;
@@ -114,8 +118,8 @@ class Energy extends Component {
         </thead>
         <tbody>
           {engeryRow(cal.fats, cal.carbs, cal.prots)}
-          {percentRow('Energy [%]', cal.fats, cal.carbs, cal.prots)}
-          {percentRow('Size [%]', grams.fats, grams.carbs, grams.prots)}
+          {percentRow("Energy [%]", cal.fats, cal.carbs, cal.prots)}
+          {percentRow("Size [%]", grams.fats, grams.carbs, grams.prots)}
         </tbody>
       </table>
     );
