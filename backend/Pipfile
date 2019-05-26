@@ -10,6 +10,7 @@ connexion = {extras = ["swagger-ui"],version = "*"}
 python-dotenv = "*"
 tabulate = "*"
 flask-cors = "*"
+tinydb = "*"
 
 [dev-packages]
 
