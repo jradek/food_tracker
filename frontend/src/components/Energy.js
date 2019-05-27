@@ -45,10 +45,18 @@ function ResultTableRow(props) {
   );
 }
 
-function ResultTable(props) {
+function Result(props) {
+  if (props.error !== null) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        {props.error}
+      </div>
+    );
+  }
+
   if (props.data === null) {
     return (
-      <div class="alert alert-info" role="alert">
+      <div className="alert alert-info" role="alert">
         Please perform a query.
       </div>
     );
@@ -97,7 +105,8 @@ class Energy extends Component {
     carbs: 0,
     proteins: 0,
     multiplier: 1.0,
-    result: dummyResult
+    result: dummyResult,
+    error: null
   };
 
   onChange = e =>
@@ -120,6 +129,10 @@ class Energy extends Component {
       .then(res => {
         console.log(res.data);
         this.setState({ result: res.data.data });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({ error: String(err) });
       });
   };
 
@@ -183,7 +196,7 @@ class Energy extends Component {
           </div>
         </form>
         <br />
-        <ResultTable data={this.state.result} />
+        <Result data={this.state.result} error={this.state.error} />
       </div>
     );
   }
