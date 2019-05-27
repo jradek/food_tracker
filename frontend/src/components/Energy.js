@@ -4,6 +4,80 @@ import React, { Component } from "react";
 
 import axios from "axios";
 
+function ProgressBar(props) {
+  return (
+    <div className="progress" style={{ height: "30px" }}>
+      <div
+        className={"progress-bar text-dark " + props.cssClass}
+        role="progressbar"
+        style={{ width: String(props.percent) + "%" }}
+      >
+        <b>{props.label}</b>
+      </div>
+    </div>
+  );
+}
+
+function ResultTableRow(props) {
+  const total = props.fats + props.carbs + props.proteins;
+  const fPercent = (props.fats * 100.0) / total;
+  const cPercent = (props.carbs * 100.0) / total;
+  const pPercent = 100.0 - (fPercent + cPercent);
+
+  const fLabel = `${props.fats.toFixed(2)} (${fPercent.toFixed(2)}%)`;
+  const cLabel = `${props.carbs.toFixed(2)} (${cPercent.toFixed(2)}%)`;
+  const pLabel = `${props.proteins.toFixed(2)} (${pPercent.toFixed(2)}%)`;
+
+  return (
+    <tr>
+      <th scope="row">{props.label}</th>
+      <td>{total.toFixed(2)}</td>
+      <td>
+        <ProgressBar label={fLabel} percent={fPercent} cssClass="bg-fat" />
+      </td>
+      <td>
+        <ProgressBar label={cLabel} percent={cPercent} cssClass="bg-carb" />
+      </td>
+      <td>
+        <ProgressBar label={pLabel} percent={pPercent} cssClass="bg-protein" />
+      </td>
+    </tr>
+  );
+}
+
+function ResultTable(props) {
+  if (props.data === null) {
+    return (
+      <div class="alert alert-info" role="alert">
+        Please perform a query.
+      </div>
+    );
+  }
+
+  return (
+    <div className="table-responsive">
+      <table className="table">
+        <thead>
+          <tr>
+            <th style={{ width: "130px" }} />
+            <th className="min">Total</th>
+            {R.map(
+              e => {
+                return <th key={e}>{e}</th>;
+              },
+              ["Fats", "Carbs", "Proteins"]
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          <ResultTableRow label="Serving [g]" {...props.data.serving} />
+          <ResultTableRow label="Energy [kcal]" {...props.data.calories} />
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 const dummyResult = {
   serving: {
     fats: 10,
@@ -16,42 +90,6 @@ const dummyResult = {
     proteins: 8 * 4
   }
 };
-
-function progressBar(valuePercent, label, cssClassExtra) {
-  const cssClass = "progress-bar text-dark ".concat(cssClassExtra);
-  return (
-    <div className="progress" style={{ height: "30px" }}>
-      <div
-        className={cssClass}
-        role="progressbar"
-        style={{ width: String(valuePercent) + "%" }}
-      >
-        <b>{label}</b>
-      </div>
-    </div>
-  );
-}
-
-function tableRow(label, f, c, p) {
-  const total = f + c + p;
-  const fPercent = (f * 100.0) / total;
-  const cPercent = (c * 100.0) / total;
-  const pPercent = 100.0 - (fPercent + cPercent);
-
-  const fLabel = `${f.toFixed(2)} (${fPercent.toFixed(2)}%)`;
-  const cLabel = `${c.toFixed(2)} (${cPercent.toFixed(2)}%)`;
-  const pLabel = `${p.toFixed(2)} (${pPercent.toFixed(2)}%)`;
-
-  return (
-    <tr>
-      <th scope="row">{label}</th>
-      <td>{total.toFixed(2)}</td>
-      <td>{progressBar(fPercent, fLabel, "bg-fat")}</td>
-      <td>{progressBar(cPercent, cLabel, "bg-carb")}</td>
-      <td>{progressBar(pPercent, pLabel, "bg-protein")}</td>
-    </tr>
-  );
-}
 
 class Energy extends Component {
   state = {
@@ -84,37 +122,6 @@ class Energy extends Component {
         this.setState({ result: res.data.data });
       });
   };
-
-  renderResult() {
-    if (this.state.result === null) {
-      return;
-    }
-
-    const cal = this.state.result.calories;
-    const grams = this.state.result.serving;
-
-    const header = ["Fats", "Carbs", "Proteins"];
-
-    return (
-      <div className="table-responsive">
-        <table className="table">
-          <thead>
-            <tr>
-              <th style={{ width: "130px" }} />
-              <th className="min">Total</th>
-              {R.map(e => {
-                return <th key={e}>{e}</th>;
-              }, header)}
-            </tr>
-          </thead>
-          <tbody>
-            {tableRow("Serving [g]", grams.fats, grams.carbs, grams.proteins)}
-            {tableRow("Energy [kcal]", cal.fats, cal.carbs, cal.proteins)}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
 
   macroFormInput(label, variable, name) {
     return (
@@ -176,7 +183,7 @@ class Energy extends Component {
           </div>
         </form>
         <br />
-        {this.renderResult()}
+        <ResultTable data={this.state.result} />
       </div>
     );
   }
