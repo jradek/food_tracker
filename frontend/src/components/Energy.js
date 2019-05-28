@@ -45,23 +45,7 @@ function ResultTableRow(props) {
   );
 }
 
-function Result(props) {
-  if (props.error !== null) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        {props.error}
-      </div>
-    );
-  }
-
-  if (props.data === null) {
-    return (
-      <div className="alert alert-info" role="alert">
-        Please perform a query.
-      </div>
-    );
-  }
-
+function ResultTable(props) {
   return (
     <div className="table-responsive">
       <table className="table">
@@ -128,11 +112,11 @@ class Energy extends Component {
       .get("http://localhost:5000/api/v1/energy/calculate", { params: params })
       .then(res => {
         console.log(res.data);
-        this.setState({ result: res.data.data });
+        this.setState({ result: res.data.data, error: null });
       })
       .catch(err => {
         console.log(err);
-        this.setState({ error: String(err) });
+        this.setState({ result: null, error: String(err) });
       });
   };
 
@@ -154,6 +138,9 @@ class Energy extends Component {
   }
 
   render() {
+    const showError = this.state.error !== null;
+    const showResult = !showError && this.state.result !== null;
+
     return (
       <div className="container">
         <h2>Energy</h2>
@@ -196,7 +183,12 @@ class Energy extends Component {
           </div>
         </form>
         <br />
-        <Result data={this.state.result} error={this.state.error} />
+        {showError && (
+          <div className="alert alert-danger" role="alert">
+            {this.state.error}
+          </div>
+        )}
+        {showResult && <ResultTable data={this.state.result} />}
       </div>
     );
   }
