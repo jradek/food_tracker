@@ -1,9 +1,16 @@
 import connexion
 import logging
+import pathlib
+
 from flask_cors import CORS
 
 
+from food import database
+
+
 logging.basicConfig(level=logging.INFO)
+
+db = database.Database()
 
 
 def create_app(config: str):
@@ -12,6 +19,10 @@ def create_app(config: str):
     logging.info("configure app as %s", config)
     app = connexion.App(__name__)
     app.add_api("swagger.yaml")
+
+    db_path = pathlib.Path(__file__).parent / ".." / "data" / "db.json"
+    logging.info("opening db from path %s", db_path)
+    db.init_app(db_path)
 
     # add CORS support
     CORS(app.app)

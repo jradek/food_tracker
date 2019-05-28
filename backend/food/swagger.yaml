@@ -12,9 +12,9 @@ basePath: "/api/v1"
 
 # Paths supported by the server application
 paths:
-  /product:
+  /products:
     get:
-      operationId: food.product.read_all
+      operationId: food.rest_api.get_products
       tags:
         - Product
       summary: "The product data structure supported by the server application"
@@ -23,34 +23,16 @@ paths:
         200:
           description: "Successful read product list operation"
           schema:
-            type: "array"
-            items:
-              properties:
-                id:
-                  type: "string"
-                kcal:
-                  type: integer
-
-  /product/{product_id}:
-    get:
-      operationId: food.product.read_one
-      tags:
-        - product
-      parameters:
-        - name: product_id
-          in: path
-          description: product id
-          type: string
-          required: True
-      responses:
-        200:
-          description: Jaja
-          schema:
+            type: object
             properties:
-              id:
-                type: string
-              kcal:
-                type: integer
+              data:
+                description: the list of products
+                type: array
+                items:
+                  $ref: '#/definitions/Product'
+              pagination:
+                description: pagination information
+                $ref: '#/definitions/Pagination'
 
   /energy/calculate:
     get:
@@ -117,3 +99,28 @@ definitions:
         type: number
         description: fats
         example: 123
+
+  Product:
+    type: object
+    required:
+      - uuid
+    properties:
+      uuid:
+        type: string
+        example: "5f9e2e63-ad66-4a33-8228-638a49a5c06f"
+      name:
+        type: string
+        example: "ei"
+
+  Pagination:
+    type: object
+    properties:
+      offset:
+        type: integer
+        example: 0
+      limit:
+        type: integer
+        example: 100
+      total:
+        type: integer
+        example: 1234

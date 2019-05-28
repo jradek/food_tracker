@@ -1,4 +1,5 @@
 from .model import CONVERSION
+from food import db
 
 
 def calculate_energy(fats, carbs, proteins, multiplier):
@@ -13,3 +14,8 @@ def calculate_energy(fats, carbs, proteins, multiplier):
     serving = {"fats": f_g, "carbs": c_g, "proteins": p_g}
 
     return {"data": {"calories": calories, "serving": serving}}
+
+
+def get_products():
+    products = db.get_products()
+    return {"pagination": {"total": len(products)}, "data": products}
