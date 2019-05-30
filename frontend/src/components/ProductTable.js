@@ -85,9 +85,32 @@ function MacroValues(props) {
   );
 }
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
 function ProductTableRow(props) {
+  const getRandomIcon = () => {
+    // see: https://fontawesome.com/icons?d=gallery&s=solid&c=status&m=free
+    const icons = [
+      "fa-fish",
+      "fa-egg",
+      // "fa-bacon",
+      "fa-cheese",
+      "fa-leaf",
+      "fa-drumstick-bite",
+      "fa-candy-cane"
+    ];
+    const value = getRandomInt(0, icons.length);
+    console.log(value);
+    return <i className={"text-primary fas " + icons[value]} />;
+  };
+
   return (
     <tr>
+      <td className="align-middle">{getRandomIcon()}</td>
       <td>
         <ul className="list-unstyled m-0">
           <li className="text-muted" style={{ fontSize: "0.6rem" }}>
@@ -103,8 +126,10 @@ function ProductTableRow(props) {
           )}
         </ul>
       </td>
-      <td>xxx kCal</td>
-      <td>{props.macros && <MacroValues {...props.macros} />}</td>
+      <td className="align-middle">xxx kCal</td>
+      <td className="align-middle">
+        {props.macros && <MacroValues {...props.macros} />}
+      </td>
     </tr>
   );
 }
