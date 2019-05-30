@@ -1,11 +1,11 @@
 // import * as R from "ramda";
-import React, { Component } from "react";
+import React from "react";
 
-const PRODUCTS = [
+const EXAMPLE_PRODUCTS = [
   {
     name: "skyr",
     uuid: "030bf546-416e-4adf-9c55-d0e48c233d50",
-    store: "Aldi",
+    store: "aldi",
     macros: {
       fats: 0.4,
       carbs: 3.4,
@@ -13,12 +13,23 @@ const PRODUCTS = [
     }
   },
   {
-    name: "feta",
-    uuid: "550ab788-59ae-4702-bcef-006f55d24c17"
+    name: "ei (groesse M)",
+    uuid: "dd9b5c80-0d45-4c23-bf17-bd78d5306677",
+    macros: {
+      fats: 20.6,
+      carbs: 3.4,
+      proteins: 10
+    }
   },
   {
-    name: "ei",
-    uuid: "dd9b5c80-0d45-4c23-bf17-bd78d5306677",
+    name: "feta",
+    uuid: "550ab788-59ae-4702-bcef-006f55d24c17",
+    store: "aldi"
+  },
+  {
+    name: "ei (groesse L)",
+    uuid: "xxx1",
+    store: "kaufland",
     macros: {
       fats: 20.6,
       carbs: 3.4,
@@ -92,24 +103,120 @@ function ProductTableRow(props) {
   );
 }
 
-class ProductTable extends Component {
-  state = {};
-  render() {
-    const rows = PRODUCTS.map(product => {
-      return <ProductTableRow key={product.uuid} {...product} />;
-    });
+function filterProducts(products, filterText, alsoSearchInStore = false) {
+  if (filterText === "") {
+    return products;
+  }
 
+  return products.filter(function(p) {
+    if (p.name.includes(filterText)) {
+      return true;
+    }
+
+    if (alsoSearchInStore) {
+      return p.store && p.store.includes(filterText);
+    }
+
+    return false;
+  });
+}
+
+function ProductTable(props) {
+  const filteredProducts = filterProducts(
+    props.products,
+    props.filterText,
+    props.alsoSearchInStore
+  );
+
+  const rows = filteredProducts.map(product => {
+    return <ProductTableRow key={product.uuid} {...product} />;
+  });
+
+  return (
+    <div className="table-responsive">
+      <table className="table">
+        <tbody>{rows}</tbody>
+      </table>
+    </div>
+  );
+}
+
+class SearchBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
+  }
+
+  handleFilterTextChange(e) {
+    this.props.onFilterTextChange(e.target.value);
+  }
+
+  handleSearchInStoreChange = e => {
+    this.props.onSearchInStoreChange(e.target.checked);
+  };
+
+  render() {
+    return (
+      <form>
+        <div className="form-row">
+          <input
+            type="text"
+            className="form-control"
+            name="searchBox"
+            placeholder="Search..."
+            value={this.props.filterText}
+            onChange={this.handleFilterTextChange}
+          />
+        </div>
+        <div className="form-check">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            name="searchInStore"
+            checked={this.props.searchInStore}
+            onChange={this.handleSearchInStoreChange}
+          />
+          <label className="form-check-label" htmlFor="searchInStore">
+            Also search in store
+          </label>
+        </div>
+      </form>
+    );
+  }
+}
+
+class FilterableProductTable extends React.Component {
+  state = {
+    filterText: "",
+    searchInStore: false
+  };
+
+  handleFilterTextChange = text => {
+    this.setState({ filterText: text });
+  };
+
+  handleSearchInStoreChange = flag => {
+    this.setState({ searchInStore: flag });
+  };
+
+  render() {
     return (
       <div className="container">
         <h2>Products</h2>
-        <div className="table-responsive">
-          <table className="table">
-            <tbody>{rows}</tbody>
-          </table>
-        </div>
+        <SearchBar
+          filterText={this.state.filterText}
+          onFilterTextChange={this.handleFilterTextChange}
+          searchInStore={this.state.searchInStore}
+          onSearchInStoreChange={this.handleSearchInStoreChange}
+        />
+        <ProductTable
+          products={EXAMPLE_PRODUCTS}
+          filterText={this.state.filterText}
+          alsoSearchInStore={this.state.searchInStore}
+        />
       </div>
     );
   }
 }
 
-export default ProductTable;
+export { ProductTable, FilterableProductTable };
