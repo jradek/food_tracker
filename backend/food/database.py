@@ -1,4 +1,5 @@
 import tinydb
+import typing
 
 
 class Database:
@@ -8,6 +9,7 @@ class Database:
     def init_app(self, db_path):
         self._db = tinydb.TinyDB(db_path)
 
-    def get_products(self):
+    def get_products(self) -> typing.Iterable:
         product_tbl: tinydb.Table = self._db.table("product")
-        return [{"uuid": r["uuid"], "name": r["name"]} for r in product_tbl]
+        products = (p for p in product_tbl)
+        return products
