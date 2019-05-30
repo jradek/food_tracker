@@ -48,6 +48,19 @@ const EXAMPLE_PRODUCTS = [
   }
 ];
 
+function percentages(macros) {
+  const total = macros.fats + macros.carbs + macros.proteins;
+
+  const pF = (macros.fats / total) * 100;
+  const pC = (macros.carbs / total) * 100;
+  const pP = 100.0 - pF - pC;
+  return {
+    fats: pF,
+    carbs: pC,
+    proteins: pP
+  };
+}
+
 function MacroValues(props) {
   const renderGrams = (value, css) => {
     return (
@@ -73,49 +86,57 @@ function MacroValues(props) {
     );
   };
 
+  const caloriePercentages = percentages(props.calories);
+
   return (
     <ul className="list-unstyled" style={{ margin: "0px" }}>
       <li>
-        {renderGrams(props.fats, "bg-fat")}
-        {renderGrams(props.carbs, "bg-carb")}
-        {renderGrams(props.proteins, "bg-protein")}
+        {renderGrams(props.grams.fats, "bg-fat")}
+        {renderGrams(props.grams.carbs, "bg-carb")}
+        {renderGrams(props.grams.proteins, "bg-protein")}
       </li>
       <li>
-        {renderEnergy(100, 33, "bg-fat")}
-        {renderEnergy(0, 0, "bg-carb")}
-        {renderEnergy(200, 66, "bg-protein")}
+        {renderEnergy(props.calories.fats, caloriePercentages.fats, "bg-fat")}
+        {renderEnergy(
+          props.calories.carbs,
+          caloriePercentages.carbs,
+          "bg-carb"
+        )}
+        {renderEnergy(
+          props.calories.proteins,
+          caloriePercentages.proteins,
+          "bg-protein"
+        )}
       </li>
     </ul>
   );
 }
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+// see: https://fontawesome.com/icons?d=gallery&s=solid&c=status&m=free
+const PRODUCT_GROUP_TO_AWESOME_ICON = new Map([
+  ["cheese", "fa-cheese"],
+  ["fish", "fa-fish"],
+  ["fruit", "fa-apple-alt"],
+  ["meat", "fa-drumstick-bite"],
+  ["sweets", "fa-cookie-bite"],
+  [("vegetable", "fa-leaf")]
+]);
+
+function awesomeIconForProductGroup(productGroup) {
+  if (PRODUCT_GROUP_TO_AWESOME_ICON.has(productGroup)) {
+    const icon = PRODUCT_GROUP_TO_AWESOME_ICON.get(productGroup);
+
+    return <i className={"text-primary fas " + icon} />;
+  }
+  return <i className="text-primary fas fa-question" />;
 }
 
 function ProductTableRow(props) {
-  // TODO: adde product category mapping
-  const getRandomIcon = () => {
-    // see: https://fontawesome.com/icons?d=gallery&s=solid&c=status&m=free
-    const icons = [
-      "fa-fish",
-      "fa-egg",
-      // "fa-bacon",
-      "fa-cheese",
-      "fa-leaf",
-      "fa-drumstick-bite",
-      "fa-candy-cane"
-    ];
-
-    const value = getRandomInt(0, icons.length);
-    return <i className={"text-primary fas " + icons[value]} />;
-  };
-
   return (
     <tr>
-      <td className="align-middle">{getRandomIcon()}</td>
+      <td className="align-middle">
+        {props.productGroup && awesomeIconForProductGroup(props.productGroup)}
+      </td>
       <td>
         <ul className="list-unstyled m-0">
           <li className="text-muted" style={{ fontSize: "0.6rem" }}>
@@ -131,9 +152,11 @@ function ProductTableRow(props) {
           )}
         </ul>
       </td>
-      <td className="align-middle">xxx kCal</td>
+      <td className="align-middle">{props.kcal.toFixed(2)} kcal</td>
       <td className="align-middle">
-        {props.macros && <MacroValues {...props.macros} />}
+        {props.macros && (
+          <MacroValues grams={props.macros} calories={props.calories} />
+        )}
       </td>
     </tr>
   );
