@@ -2,6 +2,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import axios from "axios";
+
 const EXAMPLE_PRODUCTS = [
   {
     name: "skyr",
@@ -231,7 +233,10 @@ SearchBar.propTypes = {
 class FilterableProductTable extends React.Component {
   state = {
     filterText: "",
-    alsoSearchInTags: false
+    alsoSearchInTags: false,
+    products: [],
+    showsDefault: false,
+    error: "Query database"
   };
 
   handleFilterTextChange = text => {
@@ -242,7 +247,30 @@ class FilterableProductTable extends React.Component {
     this.setState({ alsoSearchInTags: flag });
   };
 
+  componentDidMount() {
+    axios
+      .get("http://localhost:5000/api/v1/products")
+      .then(res => {
+        console.log(res.data);
+        this.setState({
+          products: res.data.data,
+          showsDefault: false,
+          error: null
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          products: EXAMPLE_PRODUCTS,
+          showsDefault: true,
+          error: String(err)
+        });
+      });
+  }
+
   render() {
+    const hasError = this.state.error !== null;
+
     return (
       <div className="container">
         <h2>Products</h2>
@@ -252,8 +280,18 @@ class FilterableProductTable extends React.Component {
           alsoSearchInTags={this.state.alsoSearchInTags}
           onAlsoSearchInTagsChange={this.handleAlsoSearchInTagsChange}
         />
+        {hasError && (
+          <div className="alert alert-danger" role="alert">
+            {this.state.error}
+          </div>
+        )}
+        {this.state.showsDefault && (
+          <div className="alert alert-info" role="alert">
+            Showing example product list
+          </div>
+        )}
         <ProductTable
-          products={EXAMPLE_PRODUCTS}
+          products={this.state.products}
           filterText={this.state.filterText}
           alsoSearchInTags={this.state.alsoSearchInTags}
         />
