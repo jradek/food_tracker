@@ -1,11 +1,12 @@
 // import * as R from "ramda";
 import React from "react";
+import PropTypes from "prop-types";
 
 const EXAMPLE_PRODUCTS = [
   {
     name: "skyr",
     uuid: "030bf546-416e-4adf-9c55-d0e48c233d50",
-    store: "aldi",
+    tags: "aldi, milbona",
     macros: {
       fats: 0.4,
       carbs: 3.4,
@@ -24,17 +25,22 @@ const EXAMPLE_PRODUCTS = [
   {
     name: "feta",
     uuid: "550ab788-59ae-4702-bcef-006f55d24c17",
-    store: "aldi"
+    tags: "aldi"
   },
   {
     name: "ei (groesse L)",
     uuid: "xxx1",
-    store: "kaufland",
+    tags: "kaufland",
     macros: {
       fats: 20.6,
       carbs: 3.4,
       proteins: 10
     }
+  },
+  {
+    name: "gorgonzola",
+    uuid: "be614d04-dbe0-44fb-b8f7-2878831e9a64",
+    tags: "penny"
   }
 ];
 
@@ -90,9 +96,9 @@ function ProductTableRow(props) {
           <li>
             <h4>{props.name}</h4>
           </li>
-          {props.store && (
+          {props.tags && (
             <li>
-              <em>{props.store}</em>
+              <em>{props.tags}</em>
             </li>
           )}
         </ul>
@@ -103,7 +109,7 @@ function ProductTableRow(props) {
   );
 }
 
-function filterProducts(products, filterText, alsoSearchInStore = false) {
+function filterProducts(products, filterText, alsoSearchInTags = false) {
   if (filterText === "") {
     return products;
   }
@@ -113,8 +119,8 @@ function filterProducts(products, filterText, alsoSearchInStore = false) {
       return true;
     }
 
-    if (alsoSearchInStore) {
-      return p.store && p.store.includes(filterText);
+    if (alsoSearchInTags) {
+      return p.tags && p.tags.includes(filterText);
     }
 
     return false;
@@ -125,7 +131,7 @@ function ProductTable(props) {
   const filteredProducts = filterProducts(
     props.products,
     props.filterText,
-    props.alsoSearchInStore
+    props.alsoSearchInTags
   );
 
   const rows = filteredProducts.map(product => {
@@ -141,6 +147,11 @@ function ProductTable(props) {
   );
 }
 
+ProductTable.propTypes = {
+  filterText: PropTypes.string.isRequired,
+  alsoSearchInTags: PropTypes.bool.isRequired
+};
+
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
@@ -151,8 +162,8 @@ class SearchBar extends React.Component {
     this.props.onFilterTextChange(e.target.value);
   }
 
-  handleSearchInStoreChange = e => {
-    this.props.onSearchInStoreChange(e.target.checked);
+  handleAlsoSearchInTagsChange = e => {
+    this.props.onAlsoSearchInTagsChange(e.target.checked);
   };
 
   render() {
@@ -172,12 +183,12 @@ class SearchBar extends React.Component {
           <input
             type="checkbox"
             className="form-check-input"
-            name="searchInStore"
-            checked={this.props.searchInStore}
-            onChange={this.handleSearchInStoreChange}
+            name="searchInTags"
+            checked={this.props.alsoSearchInTags}
+            onChange={this.handleAlsoSearchInTagsChange}
           />
-          <label className="form-check-label" htmlFor="searchInStore">
-            Also search in store
+          <label className="form-check-label" htmlFor="searchInTags">
+            Also search in tags
           </label>
         </div>
       </form>
@@ -185,18 +196,25 @@ class SearchBar extends React.Component {
   }
 }
 
+SearchBar.propTypes = {
+  filterText: PropTypes.string.isRequired,
+  onFilterTextChange: PropTypes.func.isRequired,
+  alsoSearchInTags: PropTypes.bool.isRequired,
+  onAlsoSearchInTagsChange: PropTypes.func.isRequired
+};
+
 class FilterableProductTable extends React.Component {
   state = {
     filterText: "",
-    searchInStore: false
+    alsoSearchInTags: false
   };
 
   handleFilterTextChange = text => {
     this.setState({ filterText: text });
   };
 
-  handleSearchInStoreChange = flag => {
-    this.setState({ searchInStore: flag });
+  handleAlsoSearchInTagsChange = flag => {
+    this.setState({ alsoSearchInTags: flag });
   };
 
   render() {
@@ -206,13 +224,13 @@ class FilterableProductTable extends React.Component {
         <SearchBar
           filterText={this.state.filterText}
           onFilterTextChange={this.handleFilterTextChange}
-          searchInStore={this.state.searchInStore}
-          onSearchInStoreChange={this.handleSearchInStoreChange}
+          alsoSearchInTags={this.state.alsoSearchInTags}
+          onAlsoSearchInTagsChange={this.handleAlsoSearchInTagsChange}
         />
         <ProductTable
           products={EXAMPLE_PRODUCTS}
           filterText={this.state.filterText}
-          alsoSearchInStore={this.state.searchInStore}
+          alsoSearchInTags={this.state.alsoSearchInTags}
         />
       </div>
     );
