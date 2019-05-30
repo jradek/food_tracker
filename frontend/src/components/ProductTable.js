@@ -122,12 +122,19 @@ const PRODUCT_GROUP_TO_AWESOME_ICON = new Map([
   [("vegetable", "fa-leaf")]
 ]);
 
-function awesomeIconForProductGroup(productGroup) {
-  if (PRODUCT_GROUP_TO_AWESOME_ICON.has(productGroup)) {
-    const icon = PRODUCT_GROUP_TO_AWESOME_ICON.get(productGroup);
+function awesomeIconForProductGroup(productGroups) {
+  const groups = productGroups.split(",");
 
-    return <i className={"text-primary fas " + icon} />;
+  for (var i in groups) {
+    const group = groups[i].trim();
+
+    if (PRODUCT_GROUP_TO_AWESOME_ICON.has(group)) {
+      const icon = PRODUCT_GROUP_TO_AWESOME_ICON.get(group);
+
+      return <i className={"text-primary fas " + icon} />;
+    }
   }
+
   return <i className="text-primary fas fa-question" />;
 }
 
