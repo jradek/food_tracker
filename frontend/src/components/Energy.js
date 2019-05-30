@@ -4,6 +4,8 @@ import React, { Component } from "react";
 
 import axios from "axios";
 
+import { API_ROOT } from "../api-config";
+
 function ProgressBar(props) {
   return (
     <div className="progress" style={{ height: "30px" }}>
@@ -106,12 +108,14 @@ class Energy extends Component {
       multiplier: this.state.multiplier
     };
 
-    console.log(params);
+    const endpoint = `${API_ROOT}/energy/calculate`;
+    // console.log(endpoint);
+    // console.log(params);
 
     axios
-      .get("http://localhost:5000/api/v1/energy/calculate", { params: params })
+      .get(endpoint, { params: params })
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         this.setState({ result: res.data.data, error: null });
       })
       .catch(err => {

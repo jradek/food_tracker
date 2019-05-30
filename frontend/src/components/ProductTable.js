@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 
 import axios from "axios";
 
+import { API_ROOT } from "../api-config";
+
 const EXAMPLE_PRODUCTS = [
   {
     name: "skyr",
@@ -94,6 +96,7 @@ function getRandomInt(min, max) {
 }
 
 function ProductTableRow(props) {
+  // TODO: adde product category mapping
   const getRandomIcon = () => {
     // see: https://fontawesome.com/icons?d=gallery&s=solid&c=status&m=free
     const icons = [
@@ -105,8 +108,8 @@ function ProductTableRow(props) {
       "fa-drumstick-bite",
       "fa-candy-cane"
     ];
+
     const value = getRandomInt(0, icons.length);
-    console.log(value);
     return <i className={"text-primary fas " + icons[value]} />;
   };
 
@@ -248,10 +251,12 @@ class FilterableProductTable extends React.Component {
   };
 
   componentDidMount() {
+    const endpoint = `${API_ROOT}/products`;
+
     axios
-      .get("http://localhost:5000/api/v1/products")
+      .get(endpoint)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         this.setState({
           products: res.data.data,
           showsDefault: false,
