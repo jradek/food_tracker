@@ -4,51 +4,65 @@
     "1": {
       "uuid": "030bf546-416e-4adf-9c55-d0e48c233d50",
       "name": "skyr",
-      "kcal_producer": 64,
+      "kcalProducer": 64,
+      "productGroup": "milk product",
       "macros": { "fats": 0.2, "carbs": 4.0, "proteins": 11.0 }
     },
     "2": {
       "uuid": "550ab788-59ae-4702-bcef-006f55d24c17",
       "name": "feta",
-      "kcal_producer": 256,
+      "kcalProducer": 256,
+      "productGroup": "cheese",
       "macros": { "fats": 20, "carbs": 1, "proteins": 18 }
     },
     "3": {
       "uuid": "dd9b5c80-0d45-4c23-bf17-bd78d5306677",
       "name": "ei",
-      "kcal_producer": 153,
+      "kcalProducer": 153,
       "macros": { "fats": 11, "carbs": 0.6, "proteins": 13.0 }
     },
     "4": {
       "uuid": "443ee5da-d4aa-453d-98e5-73a00c9011bf",
       "name": "spinat",
-      "kcal_producer": 22,
+      "productGroup": "vegetable",
+      "kcalProducer": 22,
       "macros": { "fats": 0.4, "carbs": 0.5, "proteins": 3.1 }
     },
     "5": {
       "uuid": "be614d04-dbe0-44fb-b8f7-2878831e9a64",
       "name": "gorgonzola",
-      "kcal_producer": 346,
+      "productGroup": "cheese",
+      "kcalProducer": 346,
       "macros": { "fats": 29.2, "carbs": 0.4, "proteins": 20.4 }
     },
     "6": {
       "uuid": "5f9e2e63-ad66-4a33-8228-638a49a5c06f",
       "name": "leinsamen",
       "producer": "schneekoppe",
-      "kcal_producer": 518,
+      "kcalProducer": 518,
       "macros": { "fats": 42, "carbs": 3, "proteins": 18 }
     },
     "7": {
       "uuid": "bf014a1a-eb8f-4971-82f6-32c31b58eb9a",
       "name": "harzer",
-      "kcal_producer": 125,
+      "productGroup": "cheese",
+      "kcalProducer": 125,
       "macros": { "fats": 0.5, "carbs": 0.1, "proteins": 30 }
     },
     "8": {
       "uuid": "3cfff2cf-25db-48f8-ab8e-73340a0ce27e",
       "name": "kokosoel",
-      "kcal_producer": 886,
+      "kcalProducer": 886,
       "macros": { "fats": 99, "carbs": 0, "proteins": 0 }
+    },
+    "9": {
+      "uuid": "ce7871ee-fc33-4e0b-8aca-6fb3c0ca711b",
+      "name": "feta 45%",
+      "tags": "netto, mondo italiano",
+      "packagingSize": "220g",
+      "productGroup": "cheese",
+      "kcalProducer": 245,
+      "macros": { "fats": 18.5, "carbs": 1.5, "proteins": 18 }
     }
   }
 }
