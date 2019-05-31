@@ -11,6 +11,7 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.4;
+  padding-top: 60px; /* required because of fixed navbar at top */
 }
 
 a {
