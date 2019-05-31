@@ -88,7 +88,7 @@ function MacroValues(props) {
 
   const renderEnergy = (value, percent, css) => {
     return (
-      <div className="progress m-1" style={{ width: "100px", float: "left" }}>
+      <div className="progress m-1 float-left" style={{ width: "100px" }}>
         <div
           className={"progress-bar text-dark " + css}
           role="progressbar"
@@ -105,7 +105,7 @@ function MacroValues(props) {
   const caloriePercentages = percentages(props.calories);
 
   return (
-    <ul className="list-unstyled" style={{ margin: "0px" }}>
+    <ul className="list-unstyled m-0">
       <li>
         {renderGrams(props.grams.fats, "bg-fat")}
         {renderGrams(props.grams.carbs, "bg-carb")}
