@@ -28,14 +28,14 @@ a {
 */
 
 .bg-fat {
-  background-color: #f1c23280;
+  background-color: #f1c23280 !important;
 }
 
 .bg-carb {
-  background: #cc000080;
+  background: #cc000080 !important;
 }
 
 
 .bg-protein {
-  background-color: #6aa84f80;
+  background-color: #6aa84f80 !important;
 }
