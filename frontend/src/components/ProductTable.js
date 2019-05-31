@@ -6,45 +6,61 @@ import axios from "axios";
 
 import { API_ROOT } from "../api-config";
 
+const EXAMPLE_CALORIES = {
+  fats: 12,
+  carbs: 3,
+  proteins: 2
+};
+
 const EXAMPLE_PRODUCTS = [
   {
     name: "skyr",
     uuid: "030bf546-416e-4adf-9c55-d0e48c233d50",
     tags: "aldi, milbona",
+    kcal: 123,
     macros: {
       fats: 0.4,
       carbs: 3.4,
       proteins: 12
-    }
+    },
+    calories: EXAMPLE_CALORIES
   },
   {
     name: "ei (groesse M)",
     uuid: "dd9b5c80-0d45-4c23-bf17-bd78d5306677",
+    kcal: 123,
     macros: {
       fats: 20.6,
       carbs: 3.4,
       proteins: 10
-    }
+    },
+    calories: EXAMPLE_CALORIES
   },
   {
     name: "feta",
     uuid: "550ab788-59ae-4702-bcef-006f55d24c17",
-    tags: "aldi"
+    tags: "aldi",
+    kcal: 123,
+    calories: EXAMPLE_CALORIES
   },
   {
     name: "ei (groesse L)",
     uuid: "xxx1",
     tags: "kaufland",
+    kcal: 23,
     macros: {
       fats: 20.6,
       carbs: 3.4,
       proteins: 10
-    }
+    },
+    calories: EXAMPLE_CALORIES
   },
   {
     name: "gorgonzola",
     uuid: "be614d04-dbe0-44fb-b8f7-2878831e9a64",
-    tags: "penny"
+    tags: "penny",
+    kcal: 123,
+    calories: EXAMPLE_CALORIES
   }
 ];
 
