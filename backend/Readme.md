@@ -5,7 +5,7 @@
 1. Build image
 
     ```bash
-    docker build -t food-tracker .
+    docker build -t food-backend .
     ```
 
 1. Run container
