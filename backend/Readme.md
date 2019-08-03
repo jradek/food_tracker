@@ -1,6 +1,6 @@
 # Food tracker
 
-## Development within docker
+## Development within docker (option A)
 
 1. Build image
 
@@ -18,3 +18,7 @@
 1. Install python remote extension in container
 1. Run configuration `food tracker server` (which allows debugging)
 1. Browse to http://localhost:8080
+
+## Development within docker (option B)
+
+* Use `vscode` and devcontainer setup

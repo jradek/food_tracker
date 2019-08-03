@@ -1,0 +1,13 @@
+{
+    "name": "Python Sample",
+    "dockerFile": "../Dockerfile",
+    "appPort": 8080,
+    "context": "..",
+    "extensions": [
+        "ms-python.python",
+        "humao.rest-client"
+    ],
+    "settings": {
+        "python.pythonPath": "/usr/local/bin/python"
+    }
+}

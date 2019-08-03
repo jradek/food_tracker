@@ -1,0 +1,8 @@
+GET http://localhost:8080/api/v1/products
+
+###
+
+GET http://localhost:8080/api/v1/energy/calculate?fats=1&carbs=2
+
+
+###
